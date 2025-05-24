@@ -672,3 +672,66 @@ setInterval(() => {
 server.listen(process.env.PORT || 3000, () => {
   console.log('listening on port 3000');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const TelegramBot = require('node-telegram-bot-api');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// هنا تحط توكن بوت التليجرام حقك
+const token = '7844741270:AAEE537UbzmK-nyT4179aSZmrxDzjmfnKiM';
+
+// تفعيل body-parser لتحليل بيانات POST (لو تحتاجه لاحقاً)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// شغل بوت التليجرام مع polling
+const bot = new TelegramBot(token, { polling: true });
+
+// استقبل أي رسالة من المستخدمين
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  console.log('Chat ID:', chatId);
+
+  // رد رسالة تأكيد للمستخدم
+  bot.sendMessage(chatId, `تم تسجيل رقم المحادثة: ${chatId}`);
+});
+
+// شغل سيرفر Express
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
